@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مفاجأة لمريم</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #ff477e;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e6366f;
+      transform: scale(1.05);
+    }
+
+    .image-box {
+      width: 350px;
+      height: 450px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 1s ease-in-out;
+    }
+
+    h1 {
+      margin: 20px 0 10px;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+      animation: pop 1.5s infinite alternate;
+    }
+
+    @keyframes pop {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff477e;
+      font-size: 20px;
+      animation: fall 5s linear infinite;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-10%); opacity: 1; }
+      to { transform: translateY(110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- زرار الأغاني -->
+  <button onclick="changeSong()">🎵 غيّر الأغنية</button>
+  <h1 id="songTitle">اضغط الزرار وعيش اللحظة 💖</h1>
+  <audio id="player" controls autoplay hidden></audio>
+
+  <!-- الصور -->
+  <div class="image-box">
+    <img id="mariamImage" src="5.jpg" alt="Mariam">
+  </div>
+
+  <!-- القلوب -->
+  <div class="hearts"></div>
+
+  <script>
+    // الصور
+    const images = ["5.jpg", "4.jpg", "3.jpg", "2.jpg", "1.jpg", "6.jpg" , "7.jpg"];
+    let imgIndex = 0;
+    const imgElement = document.getElementById("mariamImage");
+
+    setInterval(() => {
+      imgIndex = (imgIndex + 1) % images.length;
+      imgElement.style.opacity = 0;
+      setTimeout(() => {
+        imgElement.src = images[imgIndex];
+        imgElement.style.opacity = 1;
+      }, 1000);
+    }, 4000);
+
+    // الأغاني
+    const songs = [
+      { src: "r1.mp3", title: "روتينوحي اتنقلبي 💕" },
+      { src: "k1.mp3", title: "كوتي قمور ✨" },
+      { src: "31.mp3", title: "عنقود العنب 🍇" },
+      { src: "71.mp3", title: "حبيبي ولا على باله 🎶" },
+      { src: "e1.mp3", title: "والحب جاني جاني 💖" },
+    ];
+
+    const player = document.getElementById("player");
+    const songTitle = document.getElementById("songTitle");
+
+    function changeSong() {
+      const random = Math.floor(Math.random() * songs.length);
+      player.src = songs[random].src;
+      player.play();
+      songTitle.textContent = songs[random].title;
+    }
+
+    // القلوب المتساقطة
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      document.querySelector(".hearts").appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+  </script>
+
+</body>
+</html>
